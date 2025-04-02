@@ -9,8 +9,11 @@
         },
         "links": [
           {"from": "R1:GigabitEthernet1/0", "to": "R2:GigabitEthernet1/0"},
+          {"from": "R2:GigabitEthernet1/0", "to": "R1:GigabitEthernet1/0"},
           {"from": "R2:GigabitEthernet2/0", "to": "R3:GigabitEthernet2/0"},
+          {"from": "R3:GigabitEthernet2/0", "to": "R2:GigabitEthernet2/0"},
           {"from": "R3:GigabitEthernet1/0", "to": "R4:GigabitEthernet1/0"},
+          {"from": "R4:GigabitEthernet1/0", "to": "R3:GigabitEthernet1/0"},
           {"from": "R1:GigabitEthernet2/0", "to": "CE:R5:GigabitEthernet1/0"},
           {"from": "R1:GigabitEthernet3/0", "to": "CE:R6:GigabitEthernet1/0"},
           {"from": "R4:GigabitEthernet2/0", "to": "CE:R7:GigabitEthernet1/0"},
