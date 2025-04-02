@@ -1,0 +1,61 @@
+{
+    "network": {
+      "service_provider": {
+        "asn": 65000,
+        "base_prefix": "192.168.14.0/24",
+        "routers": {
+          "PE": ["R1", "R4"],
+          "P": ["R2", "R3"]
+        },
+        "links": [
+          {"from": "R1:GigabitEthernet1/0", "to": "R2:GigabitEthernet1/0"},
+          {"from": "R2:GigabitEthernet2/0", "to": "R3:GigabitEthernet2/0"},
+          {"from": "R3:GigabitEthernet1/0", "to": "R4:GigabitEthernet1/0"},
+          {"from": "R1:GigabitEthernet2/0", "to": "CE:R5:GigabitEthernet1/0"},
+          {"from": "R1:GigabitEthernet3/0", "to": "CE:R6:GigabitEthernet1/0"},
+          {"from": "R4:GigabitEthernet2/0", "to": "CE:R7:GigabitEthernet1/0"},
+          {"from": "R4:GigabitEthernet3/0", "to": "CE:R8:GigabitEthernet1/0"}
+        ]
+      },
+      "customers": [
+        {
+          "name": "Customer1",
+          "asn": 65005,
+          "base_prefix": "192.168.16.0/24",
+          "vrfs": {
+            "Customer1": {
+              "rd": "1:1",
+              "rt": "1:1"
+            }
+          }
+        },
+        {
+          "name": "Customer2",
+          "asn": 65006,
+          "base_prefix": "192.168.18.0/24",
+          "vrfs": {
+            "Customer2": {
+              "rd": "1:2",
+              "rt": "1:2"
+            }
+          }
+        }
+      ]
+    },
+    "protocols": {
+      "ospf": {
+        "area": "0"
+      },
+      "ldp": {
+        "enabled": true
+      },
+      "bgp": {
+        "ebgp_peers": [
+          {"pe": "R1", "ce": "R5", "vrf": "Customer1", "interface": "GigabitEthernet2/0"},
+          {"pe": "R1", "ce": "R6", "vrf": "Customer2", "interface": "GigabitEthernet3/0"},
+          {"pe": "R4", "ce": "R7", "vrf": "Customer1", "interface": "GigabitEthernet2/0"},
+          {"pe": "R4", "ce": "R8", "vrf": "Customer2", "interface": "GigabitEthernet3/0"}
+        ]
+      }
+    }
+  }
