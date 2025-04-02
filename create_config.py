@@ -124,6 +124,7 @@ def configure_interfaces(router, intent, allocator):
                 f" ip address {ip} 255.255.255.252",
                 " negotiation auto",
                 " mpls ip",
+                " no shutdown",
                 "!"
             ]
     
@@ -138,6 +139,7 @@ def configure_interfaces(router, intent, allocator):
                     f" ip vrf forwarding {pe_link['vrf']}",
                     f" ip address {subnet[2]} 255.255.255.252",  # PE gets second host IP
                     " negotiation auto",
+                    " no shutdown",
                     "!"
                 ]
     return config
@@ -161,6 +163,7 @@ def configure_ce_interfaces(router, intent, allocator):
         f"interface {ce_intf}",
         f" ip address {subnet[1]} 255.255.255.252",  # CE gets first host IP
         " negotiation auto",
+        " no shutdown",
         "!"
     ]
 
