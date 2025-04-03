@@ -212,7 +212,7 @@ def configure_bgp(router, intent, allocator):
             config += [
                 f"  neighbor {peer_ip} activate",
                 f"  neighbor {peer_ip} send-community extended",
-                f"  neighbor {peer_ip} next-hop-self",
+                # f"  neighbor {peer_ip} next-hop-self",
             ]
     config += [" exit-address-family", "!"]
     
