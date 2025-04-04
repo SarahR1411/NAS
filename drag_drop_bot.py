@@ -3,20 +3,23 @@ import shutil
 
 # Dictionary mapping router number to its folder ID and router name
 router_folder_corresp = {
-    5 : ("16824cb4-07da-4102-ac91-41489d3bff62", "i5"),
-    1 : ("bea7df85-0622-49e6-a664-06f9c4e0bc68", "i1"),
-    8 : ("71744ad3-824e-433c-9a9c-31f92a632d52", "i8"),
-    6: ("41b2f867-c5df-4e47-9c16-9cc2a8814009", "i6"),
-    4 : ("38e99975-b7f6-43a7-ab78-28ec20cc0e56", "i4"),
-    2 : ("7e56a6da-0635-4c76-8066-17a6f78f9b89", "i2"),
-    3 : ("6be769d8-533b-4e6e-99f5-0e574fbf4029", "i3"),
-    7 : ("3cf0b563-e4f3-4d7c-8a44-0c068686bb29", "i7"),
+    5 : ("8936d624-47db-464e-8324-7850715336a4", "i5"),
+    1 : ("0908260c-1447-42d4-8572-70b6cd9be6e9", "i1"),
+    8 : ("186ecb23-5e4d-4932-9081-40bf631515f9", "i8"),
+    6: ("f6169b8b-fec9-40b8-be99-82118ebe5313", "i6"),
+    4 : ("81830e03-089c-4b84-9afb-4adecace1ac6", "i4"),
+    2 : ("8308f3c9-ccc2-4020-80d2-ae61ea234fd4", "i2"),
+    3 : ("f4882832-ecf9-409d-9387-3303c106a53c", "i3"),
+    7 : ("cf3f1615-9b1b-4d38-a0b3-b99218c02904", "i7"),
+    10 : ("2c4d2dd5-316d-4d95-9ae4-ff2bb20c7bb8", "i10"),
+    9 : ("ded58d48-a425-4001-bf29-d8340c471c4f", "i9")
+
 }
 
 # Folder where the router configuration files are stored
-config_folder = "config_files"
+config_folder = "configs"
 # Destination folder where GNS3 expects the configuration files to be moved
-destination = "/home/srmili/GNS3/projects/GNS_Project1/project-files/dynamips"
+destination = "/home/srmili/Bureau/NAS_proj_new/project-files/dynamips"
 
 
 def delete_existing_cfg_files(dest_folder):
