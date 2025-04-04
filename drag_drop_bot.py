@@ -11,7 +11,6 @@ router_folder_corresp = {
     2 : ("7e56a6da-0635-4c76-8066-17a6f78f9b89", "i2"),
     3 : ("6be769d8-533b-4e6e-99f5-0e574fbf4029", "i3"),
     7 : ("3cf0b563-e4f3-4d7c-8a44-0c068686bb29", "i7"),
-
 }
 
 # Folder where the router configuration files are stored

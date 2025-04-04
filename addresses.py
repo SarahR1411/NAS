@@ -23,7 +23,7 @@ def parse_config(file_path):
                     interfaces[current_interface] = f"{ip} {mask}"
     return interfaces
 
-def main():
+def get_adress_file():
     """
     Main function to process all config files and write the interface summary.
     """
@@ -47,5 +47,5 @@ def main():
                 f.write(f"  Interface: {interface}, IP: {ip}\n")
             f.write("\n")  # Add a blank line between routers
 
-if __name__ == "__main__":
-    main()
+
+    

@@ -3,6 +3,9 @@ import os
 import ipaddress
 from collections import defaultdict
 
+from addresses import get_adress_file
+from create_graph import run_network_visualization
+
 def load_intent(file_path):
     """
     Load network intent from a JSON file
@@ -329,3 +332,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    get_adress_file()
+    run_network_visualization("intent.json", "interface_summary.txt")
