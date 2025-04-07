@@ -7,6 +7,7 @@
         "PE": ["R1", "R4"],
         "P": ["R2", "R3"]
       },
+      "route_reflectors": ["R1"],
       "links": [
         {"from": "R1:GigabitEthernet1/0", "to": "R2:GigabitEthernet1/0"},
         {"from": "R2:GigabitEthernet1/0", "to": "R1:GigabitEthernet1/0"},

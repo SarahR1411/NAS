@@ -189,7 +189,7 @@ def configure_ospf(router, intent, allocator):
 
 def configure_bgp(router, intent, allocator):
     """
-    configure bgp for a pe router
+    configure bgp for pe routers
     """
 
     sp = intent['network']['service_provider']
@@ -207,19 +207,23 @@ def configure_bgp(router, intent, allocator):
                 f" neighbor {peer_ip} update-source Loopback0",
             ]
     
-    # VPNv4 address-family for iBGP
     config += ["!\n address-family vpnv4"]
+    # Add route reflector neighbors
+    if router in sp.get('route_reflectors', []):
+        for peer in sp['routers']['PE']:
+            if peer != router:
+                peer_ip = allocator.get_sp_loopback_ip(peer).split('/')[0]
+                config += [f"  neighbor {peer_ip} route-reflector-client"]
     for peer in sp['routers']['PE']:
         if peer != router:
             peer_ip = allocator.get_sp_loopback_ip(peer).split('/')[0]
             config += [
                 f"  neighbor {peer_ip} activate",
                 f"  neighbor {peer_ip} send-community extended",
-                # f"  neighbor {peer_ip} next-hop-self",
             ]
     config += [" exit-address-family", "!"]
     
-    # configure ebgp for customer VRFs
+    # Configure eBGP for customer VRFs
     for pe_link in intent['protocols']['bgp']['ebgp_peers']:
         if pe_link['pe'] == router:
             vrf = pe_link['vrf']

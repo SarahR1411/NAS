@@ -1,8 +1,13 @@
 Router: R1
+  Interface: FastEthernet0/0, IP: 192.168.19.2 255.255.255.252
   Interface: GigabitEthernet1/0, IP: 192.168.14.1 255.255.255.252
   Interface: GigabitEthernet2/0, IP: 192.168.16.2 255.255.255.252
   Interface: GigabitEthernet3/0, IP: 192.168.18.2 255.255.255.252
   Interface: Loopback0, IP: 192.168.15.1 255.255.255.255
+
+Router: R10
+  Interface: FastEthernet0/0, IP: 192.168.19.5 255.255.255.252
+  Interface: Loopback0, IP: 192.168.20.5 255.255.255.255
 
 Router: R2
   Interface: GigabitEthernet1/0, IP: 192.168.14.2 255.255.255.252
@@ -15,6 +20,7 @@ Router: R3
   Interface: Loopback0, IP: 192.168.15.4 255.255.255.255
 
 Router: R4
+  Interface: FastEthernet0/0, IP: 192.168.19.6 255.255.255.252
   Interface: GigabitEthernet1/0, IP: 192.168.14.6 255.255.255.252
   Interface: GigabitEthernet2/0, IP: 192.168.16.6 255.255.255.252
   Interface: GigabitEthernet3/0, IP: 192.168.18.6 255.255.255.252
@@ -34,5 +40,9 @@ Router: R7
 
 Router: R8
   Interface: GigabitEthernet1/0, IP: 192.168.18.5 255.255.255.252
+  Interface: Loopback0, IP: 192.168.20.6 255.255.255.255
+
+Router: R9
+  Interface: FastEthernet0/0, IP: 192.168.19.1 255.255.255.252
   Interface: Loopback0, IP: 192.168.20.4 255.255.255.255
 
