@@ -23,7 +23,7 @@ def parse_config(file_path):
                     interfaces[current_interface] = f"{ip} {mask}"
     return interfaces
 
-def get_adress_file():
+def get_address_file():
     """
     Main function to process all config files and write the interface summary.
     """

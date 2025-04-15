@@ -2,8 +2,7 @@ import json
 import os
 import ipaddress
 from collections import defaultdict
-
-from addresses import get_adress_file
+from addresses import get_address_file
 from create_graph import run_network_visualization
 
 def load_intent(file_path):
@@ -17,16 +16,28 @@ class IPAllocator:
     """
     Manages IP address allocation for router interfaces and loopbacks
     """
-    def __init__(self, base_prefix):
-        self.base_network = ipaddress.IPv4Network(base_prefix)
+    def __init__(self, intent):
+        self.intent = intent
+        sp = intent['network']['service_provider']
+        self.base_network = ipaddress.IPv4Network(sp['base_prefix'])
+        self.sp_loopback_network = ipaddress.IPv4Network(sp['loopback_prefix'])
+        self.customer_loopback_networks = {
+            cust['name']: ipaddress.IPv4Network(cust['loopback_prefix'])
+            for cust in intent['network']['customers']
+        }
         self.link_subnets = {} # to store allocated subnets for SP core links
-        self.sp_loopback_network = ipaddress.IPv4Network("192.168.15.0/24")
-        self.ce_loopback_network = ipaddress.IPv4Network("192.168.20.0/24")
-        self.sp_loopback_counter = 1
-        self.ce_loopback_counter = 1
         self.loopback_ips = {}
         self.ce_loopback_ips = {}
+        self.sp_loopback_counter = 0
+        self.ce_loopback_counters = {cust['name']: 0 for cust in intent['network']['customers']}
+        self.ce_to_customer = {}
+        for peer in intent['protocols']['bgp']['ebgp_peers']:
+            ce = peer['ce']
+            vrf = peer['vrf']
+            customer = next(cust for cust in intent['network']['customers'] if vrf in cust['vrfs'])
+            self.ce_to_customer[ce] = customer['name']
         self.customer_subnets = defaultdict(list) # to store customer subnets, keyed by customer name
+
 
     def get_link_subnet(self, router_a, router_b):
         """
@@ -45,7 +56,7 @@ class IPAllocator:
         Allocate a /32 loopback ip for an SP router
         """
         if router not in self.loopback_ips:
-            ip = list(self.sp_loopback_network.hosts())[self.sp_loopback_counter - 1]
+            ip = list(self.sp_loopback_network.hosts())[self.sp_loopback_counter]
             self.loopback_ips[router] = f"{ip}/32"
             self.sp_loopback_counter += 1
         return self.loopback_ips[router]
@@ -55,9 +66,12 @@ class IPAllocator:
         Allocate a /32 loopback ip for CE router
         """
         if router not in self.ce_loopback_ips:
-            ip = list(self.ce_loopback_network.hosts())[self.ce_loopback_counter - 1]
+            customer_name = self.ce_to_customer[router]
+            counter = self.ce_loopback_counters[customer_name]
+            network = self.customer_loopback_networks[customer_name]
+            ip = list(network.hosts())[counter]
             self.ce_loopback_ips[router] = f"{ip}/32"
-            self.ce_loopback_counter += 1
+            self.ce_loopback_counters[customer_name] += 1
         return self.ce_loopback_ips[router]
 
     def get_customer_subnet(self, customer, interface):
@@ -287,8 +301,11 @@ def configure_vrfs(router, intent):
             f" rd {vrf_info['rd']}",
             f" route-target export {vrf_info['rt']}",
             f" route-target import {vrf_info['rt']}",
-            "!"
         ]
+        if 'import_rts' in vrf_info:
+            for rt in vrf_info['import_rts']:
+                config += [f" route-target import {rt}"]
+        config += ["!"]
     return config
 
 def generate_config(router, intent, allocator, is_ce):
@@ -321,7 +338,7 @@ def main():
     Main function to generate config files for all routers
     """
     intent = load_intent("intent.json")
-    allocator = IPAllocator(intent['network']['service_provider']['base_prefix'])
+    allocator = IPAllocator(intent)
     os.makedirs("configs", exist_ok=True) # makes configs directory if it doesn't exist
     sp_routers = intent['network']['service_provider']['routers']['PE'] + intent['network']['service_provider']['routers']['P']
     # set of ce routers from ebgp peers
@@ -336,5 +353,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    get_adress_file()
+    get_address_file()
     run_network_visualization("intent.json", "interface_summary.txt")
