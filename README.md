@@ -20,6 +20,12 @@
   Ce script déplace les fichiers de configuration générés dans le dossier de configs vers le répertoire requis par GNS3.  
   Avant de déplacer, il supprime les anciens fichiers `.cfg` et les fichiers NVRAM pour éviter les conflits.
 
+## Fonctionnalités
+
+- **Allocation automatique d'adresses IP** : Les interfaces et loopbacks sont assignés des adresses IP à partir des préfixes dans `intent.json`.
+- **Partage de routes VPN** : Permet l'échange de routes entre clients via des route-targets.
+- **Route reflectors** : Configuration de route-reflectors pour améliorer la scalabilité (dans le cas de plus de 2 routeurs PE).
+
 ## Prérequis
 
 - **Python 3** doit être installé sur votre machine.
