@@ -4,25 +4,27 @@
       "asn": 65000,
       "base_prefix": "192.168.14.0/24",
       "loopback_prefix": "192.168.15.0/24",
+      "external_prefix": "192.168.30.0/24",
       "routers": {
         "PE": ["R1", "R4"],
         "P": ["R2", "R3"]
       },
       "route_reflectors": ["R1"],
       "links": [
-        {"from": "R1:GigabitEthernet1/0", "to": "R2:GigabitEthernet1/0"},
-        {"from": "R2:GigabitEthernet1/0", "to": "R1:GigabitEthernet1/0"},
-        {"from": "R2:GigabitEthernet2/0", "to": "R3:GigabitEthernet2/0"},
-        {"from": "R3:GigabitEthernet2/0", "to": "R2:GigabitEthernet2/0"},
-        {"from": "R3:GigabitEthernet1/0", "to": "R4:GigabitEthernet1/0"},
-        {"from": "R4:GigabitEthernet1/0", "to": "R3:GigabitEthernet1/0"},
+        {"from": "R1:GigabitEthernet1/0", "to": "R2:GigabitEthernet1/0", "cost": 10},
+        {"from": "R2:GigabitEthernet1/0", "to": "R1:GigabitEthernet1/0", "cost": 10},
+        {"from": "R2:GigabitEthernet2/0", "to": "R3:GigabitEthernet2/0", "cost": 20},
+        {"from": "R3:GigabitEthernet2/0", "to": "R2:GigabitEthernet2/0", "cost": 20},
+        {"from": "R3:GigabitEthernet1/0", "to": "R4:GigabitEthernet1/0", "cost": 30},
+        {"from": "R4:GigabitEthernet1/0", "to": "R3:GigabitEthernet1/0", "cost": 30},
         {"from": "R1:GigabitEthernet2/0", "to": "CE:R5:GigabitEthernet1/0"},
         {"from": "R1:GigabitEthernet3/0", "to": "CE:R6:GigabitEthernet1/0"},
         {"from": "R4:GigabitEthernet2/0", "to": "CE:R7:GigabitEthernet1/0"},
         {"from": "R4:GigabitEthernet3/0", "to": "CE:R8:GigabitEthernet1/0"},
         {"from": "R1:FastEthernet0/0", "to": "CE:R9:FastEthernet0/0"},
-        {"from": "R4:FastEthernet0/0", "to": "CE:R10:FastEthernet0/0"}
-
+        {"from": "R4:FastEthernet0/0", "to": "CE:R10:FastEthernet0/0"},
+        {"from": "R1:GigabitEthernet4/0", "to": "EX:R11:GigabitEthernet1/0"},
+        {"from": "R4:GigabitEthernet4/0", "to": "EX:R12:GigabitEthernet1/0"}
       ]
     },
     "customers": [
@@ -64,6 +66,22 @@
           }
         }
       }
+    ],
+    "external_as": [
+      {
+        "name": "AS200",
+        "asn": 200,
+        "base_prefix": "192.168.31.0/24",
+        "loopback_prefix": "192.168.32.0/24",
+        "routers": ["R11"]
+      },
+      {
+        "name": "AS300",
+        "asn": 300,
+        "base_prefix": "192.168.33.0/24",
+        "loopback_prefix": "192.168.34.0/24",
+        "routers": ["R12"]
+      }
     ]
   },
   "protocols": {
@@ -81,7 +99,10 @@
         {"pe": "R4", "ce": "R8", "vrf": "Customer2", "interface": "GigabitEthernet3/0"},
         {"pe": "R1", "ce": "R9", "vrf": "Customer3", "interface": "FastEthernet0/0"},
         {"pe": "R4", "ce": "R10", "vrf": "Customer3", "interface": "FastEthernet0/0"}
-
+      ],
+      "external_peers": [
+        {"pe": "R1", "ce": "R11", "asn": 200, "relationship": "customer", "interface": "GigabitEthernet4/0"},
+        {"pe": "R4", "ce": "R12", "asn": 300, "relationship": "provider", "interface": "GigabitEthernet4/0"}
       ]
     }
   }
